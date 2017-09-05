@@ -19,7 +19,7 @@ parameters:
 
     secret:            ThisTokenIsNotSoSecretChangeIt
 
-    session_path:           "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+    session_path:           "%kernel.root_dir%/../var/sessions/%kernel.environment%" #/var/lib/php/sessions
 
     no_reply_email:    corentin.regnier59@gmail.com
     no_reply_sender:    Test Vagrant
