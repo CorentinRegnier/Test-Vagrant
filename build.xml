@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="test_vagrant" default="help" basedir=".">
+
+    <property name="crondir" value="${project.basedir}/app/cron"/>
+
+    <target name="help" description="show help">
+        <exec command="vendor/bin/phing -l" passthru="true"/>
+    </target>
+
+    <target name="cron">
+        <echo msg="Creating cron for ${env} environment. Looking in ${crondir}"/>
+        <exec command="crontab -r" logoutput="true"/>
+        <copy todir="${project.basedir}/app/cache/cron/">
+            <filterchain>
+                <replacetokens begintoken="__" endtoken="__">
+                    <token key="ENV" value="${env}"/>
+                    <token key="BASEDIR" value="${project.basedir}"/>
+                </replacetokens>
+            </filterchain>
+            <fileset dir="${crondir}">
+                <include name="${env}"/>
+            </fileset>
+        </copy>
+        <exec command="crontab ${project.basedir}/app/cache/cron/${env}" logoutput="true"/>
+        <exec command="rm ${project.basedir}/app/cache/cron/${env}" logoutput="true"/>
+    </target>
+
+    <target name="update:preprod" description="Update project on preprod">
+        <property name="env" value="prod" override="true"/>
+
+        <echo message="Fetch git..."/>
+        <exec command="git pull origin master" passthru="true" checkreturn="true"/>
+        <exec command="rm -rf var/cache/*" passthru="true" checkreturn="true"/>
+        <echo message="Composer install..."/>
+        <exec command="SYMFONY_ENV=prod composer install --no-dev --optimize-autoloader" passthru="true" checkreturn="true"/>
+        <echo message="Clear cache..."/>
+        <exec command="rm -rf var/cache/*" passthru="true" checkreturn="true"/>
+        <echo message="Remove uploads..."/>
+        <exec command="rm -rf web/upload/*" passthru="true" checkreturn="true"/>
+        <echo message="Reset database..."/>
+        <exec command="php bin/console doctrine:schema:update --force -e=prod" passthru="true"/>
+        <echo message="Load fixtures..."/>
+        <exec command="php bin/console doctrine:fixtures:load -e=prod --no-interaction" passthru="true" checkreturn="true"/>
+        <echo message="Test..."/>
+        <exec command="php bin/console doctrine:schema:validate -e=prod" passthru="true" checkreturn="true"/>
+        <echo message="Disable index..."/>
+        <exec command="echo 'User-agent: *${line.separator}Disallow: /' > web/robots.txt" passthru="true"/>
+    </target>
+
+    <target name="update:dev" description="Update project in dev">
+        <echo message="Fetch git..."/>
+        <exec command="git pull origin master" passthru="true" checkreturn="true"/>
+        <echo message="Create database..."/>
+        <exec command="php bin/console doctrine:database:create" passthru="true"/>
+        <echo message="Clear cache..."/>
+        <exec command="rm -rf var/cache/*" passthru="true" checkreturn="true"/>
+        <echo message="Composer install..."/>
+        <exec command="composer install" passthru="true" checkreturn="true"/>
+        <echo message="Clear cache..."/>
+        <exec command="rm -rf var/cache/*" passthru="true" checkreturn="true"/>
+        <echo message="Remove uploads..."/>
+        <exec command="rm -rf web/upload/*" passthru="true" checkreturn="true"/>
+        <echo message="Reset database..."/>
+        <exec command="php bin/console doctrine:schema:update --force" passthru="true"/>
+        <echo message="Load fixtures..."/>
+        <exec command="php bin/console doctrine:fixtures:load --no-interaction" passthru="true" checkreturn="true"/>
+        <echo message="Test..."/>
+        <exec command="php bin/console security:check" passthru="true" checkreturn="true"/>
+        <exec command="php bin/console doctrine:schema:validate" passthru="true" checkreturn="true"/>
+    </target>
+
+    <target name="remote:update:preprod" description="Remotely update the preprod">
+        <exec command="ssh test_vagrant@151.80.43.132 'cd site; vendor/bin/phing update:preprod'" passthru="true"
+              checkreturn="true"/>
+    </target>
+</project>
