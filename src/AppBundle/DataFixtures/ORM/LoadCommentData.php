@@ -41,7 +41,7 @@ class LoadCommentData extends AbstractFixture implements OrderedFixtureInterface
                 ->setUser($user)
                 ->setStatus(array_rand(Comment::getAvailableStatus()))
                 ->setContent(array_rand($this->contents));
-            
+
             $manager->persist($comment);
         }
         $manager->flush();
