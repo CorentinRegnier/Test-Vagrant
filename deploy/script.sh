@@ -17,7 +17,7 @@ sudo debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password pas
 sudo debconf-set-selections <<< "mysql-server-5.5 mysql-server/root_password_again password $4"
 sudo apt-get -y install mysql-server
 
-sudo sed -i "s/3306/3306/" /etc/mysql/mysql.conf.d/mysqld.cnf
+sudo sed -i "s/3306/3307/" /etc/mysql/mysql.conf.d/mysqld.cnf
 sudo sed -i "s/127.0.0.1/0.0.0.0/" /etc/mysql/mysql.conf.d/mysqld.cnf
 
 mysql -u root -p$4 -e "CREATE USER 'root'@'%' IDENTIFIED BY '$4'; GRANT ALL PRIVILEGES ON * . * TO 'root'@'%' IDENTIFIED BY '$4'; FLUSH PRIVILEGES;"
@@ -71,3 +71,17 @@ sudo a2ensite project
 
 # Restart Apache
 sudo service apache2 restart
+# Install Java
+sudo apt-get install default-jre -y
+sudo apt-get install default-jdk -y
+
+# Install elastic search
+sudo wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+echo "deb https://packages.elastic.co/elasticsearch/2.x/debian stable main" | sudo tee -a /etc/apt/sources.list.d/elasticsearch-2.x.list
+sudo apt-get update
+sudo apt-get -y install elasticsearch
+sudo echo "network.bind_host: 0" >> /etc/elasticsearch/elasticsearch.yml
+sudo echo "network.host: 0.0.0.0" >> /etc/elasticsearch/elasticsearch.yml
+sudo echo "http.port: 9207" >> /etc/elasticsearch/elasticsearch.yml
+sudo service elasticsearch restart
+sudo update-rc.d elasticsearch defaults 95 10
