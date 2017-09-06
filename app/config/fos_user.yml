@@ -1,0 +1,11 @@
+# FOSUserBundle Configuration
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    use_username_form_type: false
+    user_class: AppBundle\Entity\User
+    service:
+        mailer: fos_user.mailer.twig_swift
+    from_email:
+        address: '%no_reply_email%'
+        sender_name: '%no_reply_sender%'
