@@ -33,10 +33,3 @@ monolog:
 swiftmailer:
     delivery_address: '%agile_developer_email%'
 
-jns_xhprof:
-    location_web:    %xhprof_gui_url%
-    enabled:         %xhprof_enable%
-    entity_class:    Kitpages\XhprofBundle\Entity\XhprofDetail
-    enable_xhgui:    %xhprof_enable%
-    command: "option"
-    command_option_name: xhprof

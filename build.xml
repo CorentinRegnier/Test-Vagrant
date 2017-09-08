@@ -68,6 +68,8 @@
         <echo message="Test..."/>
         <exec command="php bin/console security:check" passthru="true" checkreturn="true"/>
         <exec command="php bin/console doctrine:schema:validate" passthru="true" checkreturn="true"/>
+        <exec command="phpunit" passthru="true" checkreturn="true"/>
+
     </target>
 
     <target name="remote:update:preprod" description="Remotely update the preprod">
