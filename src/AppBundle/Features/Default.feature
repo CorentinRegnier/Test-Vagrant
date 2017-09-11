@@ -9,3 +9,15 @@ Feature: Default
     And I wait 3 seconds
     And I scroll vertical to "100"
     And I wait 3 seconds
+
+  Scenario: Connect user
+    Given I am on "/"
+    When I am on "/login"
+    And I wait 3 seconds
+    When I fill in "username" with "admin"
+    And I wait 3 seconds
+    When I fill in "password" with "xxx"
+    And I wait 3 seconds
+    When I press "_submit"
+    Then I am on "/"
+    And I wait 3 seconds
