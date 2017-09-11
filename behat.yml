@@ -1,0 +1,22 @@
+default:
+    autoload: src/
+    extensions:
+        Behat\Symfony2Extension: ~
+        Behat\MinkExtension:
+            default_session: selenium2
+            goutte:
+                guzzle_parameters:
+                    verify: false
+            selenium2:
+                browser: chrome
+                capabilities:
+                    browserName: googlechrome
+                    browser: chrome
+            base_url: https://test-vagrant.sf/app_test.php/
+            files_path: './src/AppBundle/Features/Data/'
+    suites:
+        default:
+            contexts:
+                - AppBundle\Features\Context\FeatureContext
+            type: symfony_bundle
+            bundle: AppBundle

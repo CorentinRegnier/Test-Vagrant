@@ -5,7 +5,7 @@
 
 - in your project folder run `composer install`
 
-- add `192.168.33.6    test-vagrant.sf` in your hosts file
+- add `192.168.33.7    test-vagrant.sf` in your hosts file
     - `/etc/hosts` on Linux and MAC
     - `C:\WINDOWS\system32\drivers\etc\hosts` on Windows
 

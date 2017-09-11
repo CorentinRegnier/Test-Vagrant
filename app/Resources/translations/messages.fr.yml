@@ -1,2 +1,6 @@
 common:
     title: Test Vagrant
+
+app:
+    user:
+        title: Utilisateurs

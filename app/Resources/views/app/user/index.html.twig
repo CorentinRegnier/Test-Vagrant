@@ -1,0 +1,14 @@
+{% extends 'app/base.html.twig' %}
+
+{% block content %}
+    <div class="jumbotron">
+        <h1>
+            {{ 'app.user.title'|trans }}
+        </h1>
+    </div>
+    {% for user in users %}
+        <div>
+            {{ user.lastName }} - {{ user.firstName }}
+        </div>
+    {% endfor %}
+{% endblock %}
