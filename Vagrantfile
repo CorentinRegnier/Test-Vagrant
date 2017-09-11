@@ -43,6 +43,7 @@ Vagrant.configure(2) do |config|
   config.vm.network "forwarded_port", guest: 80, host: 8007
   config.vm.network "forwarded_port", guest: 3306, host: 3307
   config.vm.network "forwarded_port", guest: 9200, host: 9207
+  config.vm.network "forwarded_port", guest: 6379, host: 6307
   config.vm.network "private_network", ip: ip
 
    if Vagrant::Util::Platform.windows? then
@@ -63,5 +64,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision "file", source: "./deploy/apache/ssl/project.key", destination: "/var/www/project.key"
   config.vm.provision "file", source: "./deploy/phpmyadmin/config.inc.php", destination: "/var/www/config.inc.php"
   config.vm.provision "file", source: "./deploy/phpmyadmin/apache.conf", destination: "/var/www/apache.conf"
+  config.vm.provision "file", source: "./deploy/redis/redis.conf", destination: "/var/www/redis.conf"
+  config.vm.provision "file", source: "./deploy/redis/redis_init_script", destination: "/var/www/redis_init_script"
   config.vm.provision "shell", path: "./deploy/script.sh", args: [ip, name, url, '1234']
 end
