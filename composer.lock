@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ff90150129d390169aa1a79f1816c174",
+    "content-hash": "5a9da967b9349cfb9d7611874de765ed",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -4438,16 +4438,16 @@
         },
         {
             "name": "se/selenium-server-standalone",
-            "version": "3.5.3",
+            "version": "v2.53.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sveneisenschmidt/selenium-server-standalone.git",
-                "reference": "d3b5c43ca9c72d2abdbb3692d9cdda2dc20d9634"
+                "reference": "ef4eea9c99efb9c0e3084e9cae625662ccd43361"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sveneisenschmidt/selenium-server-standalone/zipball/d3b5c43ca9c72d2abdbb3692d9cdda2dc20d9634",
-                "reference": "d3b5c43ca9c72d2abdbb3692d9cdda2dc20d9634",
+                "url": "https://api.github.com/repos/sveneisenschmidt/selenium-server-standalone/zipball/ef4eea9c99efb9c0e3084e9cae625662ccd43361",
+                "reference": "ef4eea9c99efb9c0e3084e9cae625662ccd43361",
                 "shasum": ""
             },
             "require-dev": {
@@ -4473,7 +4473,7 @@
                 "selenium",
                 "testing"
             ],
-            "time": "2017-09-06T10:38:18+00:00"
+            "time": "2016-07-01T14:16:52+00:00"
         },
         {
             "name": "seld/cli-prompt",
