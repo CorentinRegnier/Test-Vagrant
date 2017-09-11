@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="test_vagrant" default="help" basedir=".">
+    <property name="chromedriver.win" value="vendor/bin/chromedriver_win.exe"/>
+    <property name="chromedriver.unix" value="vendor/bin/chromedriver_linux"/>
+    <property name="chromedriver.mac" value="vendor/bin/chromedriver_mac"/>
 
     <property name="crondir" value="${project.basedir}/app/cron"/>
 
@@ -33,7 +36,8 @@
         <exec command="git pull origin master" passthru="true" checkreturn="true"/>
         <exec command="rm -rf var/cache/*" passthru="true" checkreturn="true"/>
         <echo message="Composer install..."/>
-        <exec command="SYMFONY_ENV=prod composer install --no-dev --optimize-autoloader" passthru="true" checkreturn="true"/>
+        <exec command="SYMFONY_ENV=prod composer install --no-dev --optimize-autoloader" passthru="true"
+              checkreturn="true"/>
         <echo message="Clear cache..."/>
         <exec command="rm -rf var/cache/*" passthru="true" checkreturn="true"/>
         <echo message="Remove uploads..."/>
@@ -41,7 +45,8 @@
         <echo message="Reset database..."/>
         <exec command="php bin/console doctrine:schema:update --force -e=prod" passthru="true"/>
         <echo message="Load fixtures..."/>
-        <exec command="php bin/console doctrine:fixtures:load -e=prod --no-interaction" passthru="true" checkreturn="true"/>
+        <exec command="php bin/console doctrine:fixtures:load -e=prod --no-interaction" passthru="true"
+              checkreturn="true"/>
         <echo message="Test..."/>
         <exec command="php bin/console doctrine:schema:validate -e=prod" passthru="true" checkreturn="true"/>
         <echo message="Disable index..."/>
@@ -72,11 +77,38 @@
         <exec command="php bin/console doctrine:schema:validate" passthru="true" checkreturn="true"/>
         <echo message="PHPUNIT..."/>
         <exec command="phpunit" passthru="true" checkreturn="true"/>
-
     </target>
 
     <target name="remote:update:preprod" description="Remotely update the preprod">
         <exec command="ssh test_vagrant@151.80.43.132 'cd site; vendor/bin/phing update:preprod'" passthru="true"
               checkreturn="true"/>
+    </target>
+    <target name="tests:run-selenium" description="Run Selenium Server">
+        <if>
+            <os family="mac"/>
+            <then>
+                <exec command="vendor/bin/selenium-server-standalone -Dwebdriver.chrome.driver=${chromedriver.mac}"
+                      spawn="true"/>
+            </then>
+            <elseif>
+                <os family="Unix"/>
+                <then>
+                    <exec command="vendor/bin/selenium-server-standalone -Dwebdriver.chrome.driver=${chromedriver.unix}"
+                          spawn="true"/>
+                </then>
+            </elseif>
+            <else>
+                <exec command="vendor/bin/selenium-server-standalone -Dwebdriver.chrome.driver=${chromedriver.win}"
+                      spawn="true"/>
+            </else>
+        </if>
+        <echo msg="Selenium Server started"/>
+    </target>
+
+    <target name="tests:behat" description="Run behat tests">
+        <exec command="php bin/console doctrine:fixtures:load --no-interaction" passthru="true"/>
+        <phingcall target="tests:run-selenium"/>
+        <exec command="sleep 1"/>
+        <exec command="vendor/bin/behat" passthru="true" checkreturn="true"/>
     </target>
 </project>

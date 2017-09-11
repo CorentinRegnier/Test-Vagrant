@@ -17,13 +17,19 @@
             "Tests\\": "tests/"
         }
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://satis.corentinregnier.fr"
+        }
+    ],
     "require": {
         "php": ">=7.0",
         "symfony/symfony": "3.2.*",
         "doctrine/orm": "^2.5",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-cache-bundle": "^1.2",
-        "doctrine/doctrine-fixtures-bundle": "^2.3",
+        "doctrine/doctrine-fixtures-bundle": "~2.3.0",
         "symfony/swiftmailer-bundle": "^2.3",
         "symfony/monolog-bundle": "^2.8",
         "symfony/polyfill-apcu": "^1.0",
@@ -43,7 +49,14 @@
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^2.7",
-        "composer/composer": "dev-master"
+        "composer/composer": "dev-master",
+        "se/selenium-server-standalone": "^2.53",
+        "behat/mink-extension": "^2.2",
+        "behat/symfony2-extension": "^2.1",
+        "cregnier/google-chrome-driver": "^1.0",
+        "behat/behat": "^3.1",
+        "behat/mink-goutte-driver": "^1.2",
+        "behat/mink-selenium2-driver": "^1.3"
     },
     "scripts": {
         "post-install-cmd": [
