@@ -90,3 +90,11 @@ sudo service apache2 restart
 sudo apt-get install varnish -y
 sudo mv /var/www/default.vcl /etc/varnish/default.vcl
 sudo service varnish restart
+
+#phpize
+sudo apt install php7.0-dev -y
+#xhprof xhgui
+sudo pecl install xhprof -y
+
+#xhprof graphviz
+sudo apt-get install graphviz -y
