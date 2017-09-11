@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class Comment
  *
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="")
  * @ORM\Table(name="comments")
  */
 class Comment

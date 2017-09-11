@@ -71,17 +71,46 @@ sudo a2ensite project
 
 # Restart Apache
 sudo service apache2 restart
+
 # Install Java
-sudo apt-get install default-jre -y
-sudo apt-get install default-jdk -y
+#sudo apt-get install default-jre -y
+#sudo apt-get install default-jdk -y
 
 # Install elastic search
-sudo wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-echo "deb https://packages.elastic.co/elasticsearch/2.x/debian stable main" | sudo tee -a /etc/apt/sources.list.d/elasticsearch-2.x.list
-sudo apt-get update
-sudo apt-get -y install elasticsearch
-sudo echo "network.bind_host: 0" >> /etc/elasticsearch/elasticsearch.yml
-sudo echo "network.host: 0.0.0.0" >> /etc/elasticsearch/elasticsearch.yml
-sudo echo "http.port: 9207" >> /etc/elasticsearch/elasticsearch.yml
-sudo service elasticsearch restart
-sudo update-rc.d elasticsearch defaults 95 10
+#sudo wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+#echo "deb https://packages.elastic.co/elasticsearch/2.x/debian stable main" | sudo tee -a /etc/apt/sources.list.d/elasticsearch-2.x.list
+#sudo apt-get update
+#sudo apt-get -y install elasticsearch
+#sudo echo "network.bind_host: 0" >> /etc/elasticsearch/elasticsearch.yml
+#sudo echo "network.host: 0.0.0.0" >> /etc/elasticsearch/elasticsearch.yml
+#sudo echo "http.port: 9207" >> /etc/elasticsearch/elasticsearch.yml
+#sudo service elasticsearch restart
+#sudo update-rc.d elasticsearch defaults 95 10
+
+# Install Redis (cache doctrine)
+sudo apt-get install build-essential -y
+cd /tmp
+wget http://download.redis.io/redis-stable.tar.gz
+tar xvzf redis-stable.tar.gz
+cd redis-stable
+make
+make test
+sudo make install
+
+# Create directories Redis
+sudo mkdir /etc/redis
+sudo mkdir /var/lib/redis
+sudo mkdir /var/lib/redis/6307
+sudo mkdir /var/log/redis/
+
+# Create User REDIS
+sudo adduser --system --group --no-create-home redis
+sudo chown redis:redis /var/lib/redis
+sudo chmod 770 /var/lib/redis
+
+# Auto start redis
+sudo mv /var/www/redis.conf /etc/redis/6307.conf
+sudo mv /var/www/redis_init_script /etc/init.d/redis_6307
+chmod +x /etc/init.d/redis_6307
+sudo update-rc.d redis_6307 defaults
+sudo /etc/init.d/redis_6307 start
